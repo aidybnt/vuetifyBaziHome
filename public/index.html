@@ -1,17 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+</noscript>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script>
+  //后去登陆IP
+  localStorage.setItem('ip', returnCitySN['cip'])
+</script>
+<div id="app">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .box {
+            height: 100vh;
+            padding-top: 12%;
+            box-sizing: border-box;
+            background-color: #607D8B;
+        }
+
+        .box .taiji {
+            margin: 0 auto;
+        }
+
+        /*只有最外面容器使用了宽高px设置，	内部均为百分比设置，只需改变容器大小，太极图就可以自动缩放*/
+        .taiji {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: #fff;
+            animation: spin 6s linear infinite; /*动画设置*/
+        }
+
+        .tj_1 {
+            position: absolute;
+            top: 0px;
+            width: 50%;
+            height: 100%;
+        }
+
+        .tj_big1 {
+            left: 0px;
+            border-radius: 100% 0 0 100% /50% 0 0 50%;
+            background: #000;
+        }
+
+        .tj_big2 {
+            right: 0px;
+            border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+            background: #fff;
+        }
+
+        .tj_2 {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 25%;
+            border-radius: 50%;
+        }
+
+        .tj_s1 {
+            bottom: 0px;
+            background: #fff;
+        }
+
+        .tj_s2 {
+            top: 0px;
+            background: #000;
+        }
+
+        .tj_ss {
+            position: absolute;
+            width: 25%;
+            height: 25%;
+            left: 37.5%;
+            border-radius: 50%;
+        }
+
+        .tj_w {
+            top: 37.5%;
+            background: #000;
+        }
+
+        .tj_b {
+            top: 37.5%;
+            background: #fff;
+        }
+
+        /*动画方法*/
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <!-- 代码部分begin -->
+    <div class="box">
+        <div class="taiji">
+            <div class="tj_1 tj_big1"></div>
+            <div class="tj_1 tj_big2"></div>
+            <div class="tj_2 tj_s1">
+                <div class="tj_ss tj_w"></div>
+            </div>
+            <div class="tj_2 tj_s2">
+                <div class="tj_ss tj_b"></div>
+            </div>
+        </div>
+        <p style="text-align: center;font-size: 15px;padding: 24px 0">页面加载中...请稍后</p>
+    </div>
+    <!-- 代码部分end -->
+</div>
+<!-- built files will be auto injected -->
+</body>
 </html>
