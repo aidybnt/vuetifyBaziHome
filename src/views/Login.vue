@@ -1,110 +1,110 @@
 <template>
-    <v-dialog
-        v-model="this.$store.state.loginDialog.dialog"
-        persistent
-        max-width="600px"
+  <v-dialog
+      v-model="this.$store.state.loginDialog.dialog"
+      persistent
+      max-width="600px"
+  >
+    <v-card
+        :disabled="processing"
+        :loading="processing"
     >
-      <v-card
-          :disabled="processing"
-          :loading="processing"
-      >
-        <!--        进度条loading-->
-        <template slot="progress">
-          <v-progress-linear
-              color="#FF5722"
-              height="10"
-              indeterminate
-          ></v-progress-linear>
-        </template>
-        <!--        对话框标题-->
-        <v-card-title>
-          <span class="headline" v-text="this.$store.state.loginDialog.title"></span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <!--              表单-->
-              <v-form
-                  ref="form"
-                  lazy-validation
-                  style="width: 100%">
-                <v-col cols="12">
-                  <v-text-field
-                      label="用户名"
-                      v-model="formData.username"
-                      :rules="nameRules"
-                      :counter="24"
-                      maxlength="24"
-                      required
-                      prepend-icon="mdi-account-arrow-right-outline"
-                  ></v-text-field>
-                </v-col>
-                <v-col v-if="this.$store.state.loginDialog.title === '注册'" cols="12">
-                  <v-text-field
-                      label="邮箱"
-                      v-model="formData.email"
-                      :rules="emailRules"
-                      required
-                      prepend-icon="mdi-email-edit-outline"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                      label="密码"
-                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :type="show1 ? 'text' : 'password'"
-                      @click:append="show1 = !show1"
-                      v-model="formData.password"
-                      :rules="passwordRules"
-                      :counter="30"
-                      maxlength="30"
-                      required
-                      prepend-icon="mdi-form-textbox-password"
-                  ></v-text-field>
-                </v-col>
-                <v-col v-if="this.$store.state.loginDialog.title === '注册'" cols="12">
-                  <v-text-field
-                      label="再次输入密码"
-                      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :type="show2 ? 'text' : 'password'"
-                      @click:append="show2 = !show2"
-                      v-model="formData.passwordConfirm"
-                      :counter="30"
-                      maxlength="30"
-                      :rules="passwordCheck"
-                      required
-                      prepend-icon="mdi-key-plus"
-                  ></v-text-field>
-                </v-col>
-              </v-form>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-              color="#607D8B"
-              text
-              @click="findPassword">
-            忘记密码
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn
-              color="blue darken-1"
-              text
-              @click="closeDialog"
-          >
-            取消
-          </v-btn>
-          <v-btn
-              color="blue darken-1"
-              text
-              @click="save"
-          >
-            确定
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <!--        进度条loading-->
+      <template slot="progress">
+        <v-progress-linear
+            color="#FF5722"
+            height="10"
+            indeterminate
+        ></v-progress-linear>
+      </template>
+      <!--        对话框标题-->
+      <v-card-title>
+        <span class="headline" v-text="this.$store.state.loginDialog.title"></span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <!--              表单-->
+            <v-form
+                ref="form"
+                lazy-validation
+                style="width: 100%">
+              <v-col cols="12">
+                <v-text-field
+                    label="用户名"
+                    v-model="formData.username"
+                    :rules="nameRules"
+                    :counter="24"
+                    maxlength="24"
+                    required
+                    prepend-icon="mdi-account-arrow-right-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col v-if="this.$store.state.loginDialog.title === '注册'" cols="12">
+                <v-text-field
+                    label="邮箱"
+                    v-model="formData.email"
+                    :rules="emailRules"
+                    required
+                    prepend-icon="mdi-email-edit-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                    label="密码"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show1 ? 'text' : 'password'"
+                    @click:append="show1 = !show1"
+                    v-model="formData.password"
+                    :rules="passwordRules"
+                    :counter="30"
+                    maxlength="30"
+                    required
+                    prepend-icon="mdi-form-textbox-password"
+                ></v-text-field>
+              </v-col>
+              <v-col v-if="this.$store.state.loginDialog.title === '注册'" cols="12">
+                <v-text-field
+                    label="再次输入密码"
+                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show2 ? 'text' : 'password'"
+                    @click:append="show2 = !show2"
+                    v-model="formData.passwordConfirm"
+                    :counter="30"
+                    maxlength="30"
+                    :rules="passwordCheck"
+                    required
+                    prepend-icon="mdi-key-plus"
+                ></v-text-field>
+              </v-col>
+            </v-form>
+          </v-row>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+            color="#607D8B"
+            text
+            @click="findPassword">
+          忘记密码
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn
+            color="blue darken-1"
+            text
+            @click="closeDialog"
+        >
+          取消
+        </v-btn>
+        <v-btn
+            color="blue darken-1"
+            text
+            @click="save"
+        >
+          确定
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -116,9 +116,9 @@ export default {
   data: () => {
     return {
       formData: {
-        username: '刘三姐',
+        username: '',
         email: '',
-        password: 'ffffff',
+        password: '',
         passwordConfirm: '',
       },
       show1: false,
@@ -182,6 +182,11 @@ export default {
             .then(response => {
               this.processing = false
               if (response.status === 200) {
+                if (response.data.user.user_type === 9) {
+                  this.Message('error', '用户受限，请联系管理员。')
+                  this.closeDialog()
+                  return false
+                }
                 this.$router.push({name: 'Add',})
                 this.closeDialog()
                 this.Message('success', response.data.message)

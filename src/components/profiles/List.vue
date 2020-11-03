@@ -231,6 +231,7 @@ export default {
     },
     //点击列跳转SHOW
     rowClick(v) {
+      this.$router.push('/show')
       this.$store.commit('showDataMuta', {
         year: v.year,
         month: v.month,
@@ -239,7 +240,6 @@ export default {
         minute: v.minute,
       })
       this.$store.commit('openShowFromListMuta', {openShowFromList: true})
-      this.$router.push('/show')
 
     },
     //修改删除统一点击加以判断

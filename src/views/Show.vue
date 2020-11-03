@@ -732,13 +732,13 @@ export default {
 }
 
 >>> .v-card {
-  background-color: #595757;
-  color: white;
+  background-color: #595757 !important;
+  color: white !important;
 }
 
 .font1 {
   font-size: 0.6rem !important;
-  color: white;
+  color: white !important;
 }
 
 .noRadius {
@@ -751,19 +751,19 @@ export default {
 
 
 .theme--light.v-divider {
-  border-color: #c2a36a;
+  border-color: #c2a36a !important;
 }
 
 .imgPointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .mLiuYue {
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.3rem !important;
 }
 
 >>> .v-banner__wrapper {
-  padding: 16px 0 16px 0;
+  padding: 16px 0 16px 0 !important;
 }
 
 </style>

@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
   }
   //判断页面是否有权访问
   if (to.meta.requireAuth) {
-    if (localStorage.access_token !== null) {
+    if (localStorage.getItem('access_token')) {
       next()
     } else {
       next({

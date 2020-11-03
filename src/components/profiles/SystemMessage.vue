@@ -33,11 +33,14 @@ export default {
     items: [],
     model: 0,
     sysMsg: '',
+    // port: ':2053',
+    port: ':6001',
   }),
   created() {
     window.Echo = new Echo({
       broadcaster: 'socket.io',
-      host: 'http://data.com' + ':6001'
+      // host: 'https://data.water555.xyz' + this.port
+      host: 'http://data.com' + this.port
     });
     window.Echo.channel('laravel_database_sysMsg')
         .listen('SystemMessage', (e) => {
@@ -51,6 +54,9 @@ export default {
       console.log(eval(this.items))
     }
   },
+  mounted() {
+    console.log(window.location.hostname);
+  }
 }
 </script>
 
