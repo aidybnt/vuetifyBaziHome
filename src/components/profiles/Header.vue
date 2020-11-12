@@ -55,6 +55,7 @@ export default {
             this.Message('success', response.data.message)
             this.$store.commit('paginationMuta', {total: ''})
             localStorage.clear()
+            localStorage.setItem('access_token', 'null')
             this.$router.push({name: 'Home'})
           })
           .catch(error => {

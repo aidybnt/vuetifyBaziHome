@@ -12,10 +12,19 @@
       <v-list-item two-line class="transparent"></v-list-item>
       <!--        头像-->
       <v-list-item two-line class="my-3" @click="$router.push('/info')">
-        <v-list-item-avatar size="60">
-          <v-avatar color="orange" size="60">
-            <img :src="$store.state.userInfo.avatar" alt="$store.state.userInfo.username"/>
-          </v-avatar>
+        <v-list-item-avatar style="margin: 10px 9px 10px 0; padding: 15px 0 15px 0; min-width: 60px;height: 80px;overflow:visible !important;">
+          <v-badge
+              :value="($store.state.getMessage.privateMessage.length > 0 || $store.state.getMessage.publicMessage !== null) && $store.state.messageTotal !== 0"
+              color="green"
+              :content="$store.state.messageTotal"
+              overlap
+              offset-x="24"
+              style="overflow:visible !important;"
+          >
+            <v-avatar color="orange" size="60" style="overflow:visible !important;">
+              <img :src="$store.state.userInfo.avatar" alt="$store.state.userInfo.username"/>
+            </v-avatar>
+          </v-badge>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="text-truncate">{{ $store.state.userInfo.username }}</v-list-item-title>

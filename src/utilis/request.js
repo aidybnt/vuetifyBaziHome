@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'http://data.com/api/',
-  // baseURL: 'https://data.water555.xyz/api/',
+  // baseURL: 'http://data.com/api/',
+  // baseURL: 'http://192.168.1.163/api/',
+  baseURL: 'https://data.water555.xyz/api/',
   // timeout: 3000
   timeout: 60000
 })
@@ -18,9 +19,9 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   function (response) {
-    console.group('全局请求响应')
-    console.log(response);
-    console.groupEnd()
+    // console.group('全局请求响应')
+    // console.log(response);
+    // console.groupEnd()
     if (response.status === 200) {
       return response
     } else {
@@ -28,9 +29,9 @@ instance.interceptors.response.use(
     }
   },
   error => {
-    console.group('全局错误响应')
-    console.warn(error.response)
-    console.groupEnd()
+    // console.group('全局错误响应')
+    // console.warn(error.response)
+    // console.groupEnd()
     let errors = error + ''
     //网络不通弹窗
     if (errors === 'Error: Network Error' || error === '' || error === 'undefined') {

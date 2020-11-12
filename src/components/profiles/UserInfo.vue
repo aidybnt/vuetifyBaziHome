@@ -6,10 +6,21 @@
         flat
     >
       <v-list-item two-line class="my-3" @click="$router.push('/info')">
-        <v-list-item-avatar size="60">
-          <v-avatar color="orange" size="60">
-            <img :src="$store.state.userInfo.avatar" alt="$store.state.userInfo.username"/>
-          </v-avatar>
+        <v-list-item-avatar size="60"
+                            style="margin: 10px 9px 10px 0; padding: 15px 0 15px 0; min-width: 60px;height: 80px;overflow:visible !important;"
+        >
+          <v-badge
+              :value="($store.state.getMessage.privateMessage.length > 0 || $store.state.getMessage.publicMessage !== null) && $store.state.messageTotal !== 0"
+              color="red"
+              :content="$store.state.messageTotal"
+              overlap
+              offset-x="20"
+              style="overflow:visible !important;"
+          >
+            <v-avatar color="orange" size="60" style="overflow:visible !important;">
+              <img :src="$store.state.userInfo.avatar" alt="$store.state.userInfo.username"/>
+            </v-avatar>
+          </v-badge>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="text-truncate">{{ $store.state.userInfo.username }}</v-list-item-title>
@@ -130,7 +141,9 @@ const SystemMessage = () => import("@/components/profiles/SystemMessage")
 
 export default {
   name: "UserInfo",
+
   components: {SystemMessage},
+
   data: () => ({
     avatarShow: false,
 
@@ -146,9 +159,11 @@ export default {
     titleCardDisabled: false,
     titleButtonDisabled: true,
   }),
+
   created() {
     this.token = base64decode(localStorage.getItem('access_token')).toString()
   },
+
   computed: {
     //title验证规则
     titleRules() {
@@ -244,6 +259,7 @@ export default {
           })
     },
   },
+
   mounted() {
     this.avatarShow = localStorage.APP_URL + localStorage.avatar
     let cut = this.avatarShow.substring(this.avatarShow.length - 3)

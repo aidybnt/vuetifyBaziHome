@@ -436,7 +436,6 @@ export default {
             }
           })
           .catch(error => {
-            console.log(error);
             this.Message('error', error)
             this.processing = false
           })
@@ -468,6 +467,23 @@ export default {
     this.$store.commit('editMuta', {edit: false})
     localStorage.removeItem('editData')
     next()
+  },
+
+  beforeRouteEnter(to, from, next) {
+    if (typeof localStorage.getItem('access_token') === 'string') {
+      if (localStorage.getItem('access_token') === 'null') {
+        next('/')
+      }
+      if (localStorage.getItem('access_token') === '') {
+        next('/')
+      }
+      if (localStorage.getItem('access_token') === 'undefined') {
+        next('/')
+      }
+      next()
+    } else {
+      next('/')
+    }
   }
 }
 </script>

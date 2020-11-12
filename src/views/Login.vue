@@ -182,30 +182,31 @@ export default {
             .then(response => {
               this.processing = false
               if (response.status === 200) {
-                if (response.data.user.user_type === 9) {
-                  this.Message('error', '用户受限，请联系管理员。')
-                  this.closeDialog()
-                  return false
-                }
-                this.$router.push({name: 'Add',})
-                this.closeDialog()
                 this.Message('success', response.data.message)
                 //本地存储
-                localStorage.access_token = base64encode(response.data.data.access_token)
-                localStorage.id = base64encode(response.data.user.id + '')
-                localStorage.username = response.data.user.username
-                localStorage.title = response.data.user.title
-                localStorage.avatar = response.data.user.avatar
-                localStorage.avatarPath = response.data.user.avatarPath
-                localStorage.user_type = response.data.user.user_type
-                localStorage.APP_URL = response.data.user.APP_URL
+                localStorage.setItem('access_token', base64encode(response.data.data.access_token))
+                localStorage.setItem('id', base64encode((response.data.user.id + '')))
+                localStorage.setItem('username', response.data.user.username)
+                localStorage.setItem('title', response.data.user.title)
+                localStorage.setItem('avatar', response.data.user.avatar)
+                localStorage.setItem('avatarPath', response.data.user.avatarPath)
+                localStorage.setItem('user_type', response.data.user.user_type)
+                localStorage.setItem('APP_URL', response.data.user.APP_URL)
                 this.$store.commit('userInfoMuta', {
                   username: localStorage.username,
                   avatar: (localStorage.APP_URL + localStorage.avatar),
                   title: localStorage.title,
                 })
-              } else {
-                this.Message('error', '数据传输异常，请重试。')
+                if (response.data.user.user_type === 9) {
+                  this.Message('error', '用户受限，请联系管理员。')
+                  this.closeDialog()
+                  localStorage.clear()
+                  this.$router.push('/')
+                }
+                setTimeout(() => {
+                  this.$router.push('/add')
+                  this.closeDialog()
+                }, 500)
               }
             })
             .catch(error => {

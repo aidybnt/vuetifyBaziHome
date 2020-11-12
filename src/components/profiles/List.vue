@@ -238,6 +238,7 @@ export default {
         day: v.day,
         hour: v.hour,
         minute: v.minute,
+        sex: v.sex,
       })
       this.$store.commit('openShowFromListMuta', {openShowFromList: true})
 

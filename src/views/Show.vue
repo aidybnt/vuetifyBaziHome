@@ -225,6 +225,7 @@ export default {
         day: '',
         hour: '',
         minute: '',
+        sex: '',
         //带一岁起运
         // year: 2019,
         // month: 12,
@@ -330,11 +331,17 @@ export default {
     this.baziTime.hour = this.$store.state.showData.hour
     this.baziTime.minute = this.$store.state.showData.minute
 
+    if (this.$store.state.showData.sex === '男') {
+      this.baziTime.sex = 1
+    } else {
+      this.baziTime.sex = 0
+    }
+
     //开始计算八字
     this.solar = this.Solar.fromYmdHms(this.baziTime.year, this.baziTime.month, this.baziTime.day, this.baziTime.hour, this.baziTime.minute, 0)
     this.lunar = this.solar.getLunar() //阴历实例
     this.bazi = this.lunar.getEightChar() //八字实例
-    this.Yun = this.bazi.getYun(1)  //1男 运实例
+    this.Yun = this.bazi.getYun(this.baziTime.sex)  //1男 运实例
     this.daYun = this.Yun.getDaYun() //得到所有大运(包含大运，流年，流月）实例
 
     //大运转换成新数组

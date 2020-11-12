@@ -23,18 +23,15 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-  //判断页面是否有权访问
-  if (to.meta.requireAuth) {
-    if (localStorage.getItem('access_token')) {
-      next()
-    } else {
-      next({
-        path: '/',
-        redirect: {name: 'Home'}
-      })
-    }
-  } else {
+
+  if (to.path === '/add') {
     next()
+  } else {
+    if (to.meta.requireAuth && !localStorage.getItem('access_token')) {
+      next({path: '/login'})
+    } else {
+      next()
+    }
   }
 })
 

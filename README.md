@@ -67,3 +67,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
       items-per-page-text="$vuetify.dataTable.itemsPerPageText"/>
 </template>
 ````
+
+git reset --hard HEAD
+
+git pull -r 或 git pull

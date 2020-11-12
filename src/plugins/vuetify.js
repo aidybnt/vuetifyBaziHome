@@ -9,6 +9,11 @@ import Vuetify, {
   VProgressCircular,
   VList,
   VListItem,
+  VDivider,
+  VChip,
+  VListGroup,
+  VAvatar,
+  VListItemGroup
 } from 'vuetify/lib';
 import {Ripple} from 'vuetify/lib/directives'
 
@@ -23,6 +28,11 @@ Vue.use(Vuetify, {
     VProgressCircular,
     VList,
     VListItem,
+    VDivider,
+    VChip,
+    VListGroup,
+    VAvatar,
+    VListItemGroup
   },
   directives: {
     Ripple,

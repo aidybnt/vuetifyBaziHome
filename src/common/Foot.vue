@@ -7,15 +7,23 @@
         dark
         shift
         :class="footClass"
+        style="position: relative"
     >
+      <div class="dot"
+           v-if="($store.state.getMessage.privateMessage.length > 0 || $store.state.getMessage.publicMessage !== null) && $store.state.messageTotal !== 0"
+           v-text="$store.state.messageTotal"
+      ></div>
       <v-btn v-for="(item,i) in items" :key="i" :to="item.url" min-width="32%">
         <span>{{ item.title }}</span>
-        <v-icon>{{ item.icon }}</v-icon>
+        <v-icon>
+          {{ item.icon }}
+        </v-icon>
       </v-btn>
     </v-bottom-navigation>
 
     <!--    版权-->
     <v-spacer class="d-flex justify-center">
+
       <v-btn @click="bottomSheetShow"
              text
              color="white"
@@ -78,9 +86,9 @@ export default {
         {'icon': 'mdi-discord', 'text': 'aidybnt#3272'},
       ],
       items: [
-        {title: '添加命盘', url: '/add', icon: 'mdi-comment-edit-outline'},
-        {title: '命盘列表', url: '/list', icon: 'mdi-format-list-bulleted'},
-        {title: '个人信息', url: '/info', icon: 'mdi-account-box'},
+        {title: '添加命盘', url: '/add', icon: 'mdi-comment-edit-outline', message: '',},
+        {title: '命盘列表', url: '/list', icon: 'mdi-format-list-bulleted', message: '',},
+        {title: '个人信息', url: '/info', icon: 'mdi-account-box', message: '',},
       ],
     }
   },
@@ -144,3 +152,25 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.dot {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background-color: #F44336;
+  text-align: center;
+  line-height: 20px;
+  right: 42px;
+  top: 3px;
+  font-size: 12px;
+  z-index: 999;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  white-space: nowrap !important;
+}
+</style>

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {post} from "@/utilis/request";
+import {base64decode} from "crypto.js"
 
 Vue.use(Vuex)
 
@@ -48,6 +50,11 @@ export default new Vuex.Store({
       hour: '',
       minute: '',
     },
+    getMessage: {
+      publicMessage: '',
+      privateMessage: '',
+    },
+    messageTotal: '',
   },
   mutations: {
     //打开登陆和注册界面
@@ -92,8 +99,38 @@ export default new Vuex.Store({
       state.showData.day = payload.day
       state.showData.hour = payload.hour
       state.showData.minute = payload.minute
+      state.showData.sex = payload.sex
     },
+    getMessageMutations(state, v) {
+      state.getMessage.publicMessage = v.publicMessage
+      state.getMessage.privateMessage = v.privateMessage
+      state.getMessage.publicTotal = v.publicTotal
+    },
+    messageTotalMutations(state, v) {
+      state.messageTotal = v
+    }
   },
-  actions: {},
+  actions: {
+    getMessage({commit}) {
+      post('getMessage',
+        {id: base64decode(localStorage.getItem('id')).toString()},
+        {
+          headers: {
+            'Authorization': 'Bearer ' + base64decode(localStorage.getItem('access_token')).toString(),
+            'Content-Type': 'application/json', 'Accept': 'application/json'
+          }
+        }
+      )
+        .then(response => {
+          if (response.status === 200) {
+            commit('getMessageMutations', response.data.data)
+            commit('messageTotalMutations', response.data.data.publicTotal)
+          }
+        })
+        .catch(error => {
+          this.Message('error', error)
+        })
+    }
+  },
   modules: {}
 })
