@@ -22,13 +22,8 @@
     </v-bottom-navigation>
 
     <!--    版权-->
-    <v-spacer class="d-flex justify-center">
-
-      <v-btn @click="bottomSheetShow"
-             text
-             color="white"
-             class="caption pa-0"
-      >
+    <v-spacer class="d-flex justify-center" v-if="$store.state.userType===1 && $store.state.userType2===0 || $store.state.userType===0">
+      <v-btn @click="bottomSheetShow" text color="white" class="caption pa-0">
         <v-icon small class="mr-2"> mdi-copyright</v-icon>
         {{ new Date().getFullYear() }}
         <v-icon v-for="(item, i) in bottomSheets"
@@ -42,7 +37,8 @@
 
     <!--   底部弹出层-->
     <v-bottom-sheet
-        :value="isBottomSheetShow"
+        :value="$store.state.isBottomSheetShow"
+        @click="bottomSheetShow"
         @click:outside="outSideBottomSheetShow"
         inset
     >
@@ -76,7 +72,6 @@ export default {
   data: () => {
     return {
       footClass: 'd-flex',
-      isBottomSheetShow: '',
       bottomSheets: [
         {'icon': 'mdi-google', 'text': 'aidybnt@gmail.com'},
         {'icon': 'mdi-twitter', 'text': 'aidybnt'},
@@ -120,10 +115,10 @@ export default {
   },
   methods: {
     bottomSheetShow() {
-      this.isBottomSheetShow = !this.isBottomSheetShow;
+      this.$store.commit('isBottomSheetShowMutations', true)
     },
     outSideBottomSheetShow() {
-      this.isBottomSheetShow = !this.isBottomSheetShow;
+      this.$store.commit('isBottomSheetShowMutations', false)
     },
   },
   watch: {

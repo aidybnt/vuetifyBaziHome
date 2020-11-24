@@ -1,10 +1,7 @@
 <template>
   <div>
     <!--显示头像-->
-    <v-card
-        class="my-6 mx-6 d-flex d-md-none"
-        flat
-    >
+    <v-card class="mx-3 d-flex d-md-none" flat>
       <v-list-item two-line class="my-3" @click="$router.push('/info')">
         <v-list-item-avatar size="60"
                             style="margin: 10px 9px 10px 0; padding: 15px 0 15px 0; min-width: 60px;height: 80px;overflow:visible !important;"
@@ -18,7 +15,7 @@
               style="overflow:visible !important;"
           >
             <v-avatar color="orange" size="60" style="overflow:visible !important;">
-              <img :src="$store.state.userInfo.avatar" alt="$store.state.userInfo.username"/>
+              <img :src="avatarUrl" alt="$store.state.userInfo.username"/>
             </v-avatar>
           </v-badge>
         </v-list-item-avatar>
@@ -28,12 +25,14 @@
         </v-list-item-content>
       </v-list-item>
     </v-card>
+
+    <!--用户组别-->
+    <MemberTime/>
+
     <!--设置头像-->
-    <v-card
-        :disabled="avatarCardDisabled"
-        :loading="avatarLoading"
-        class="my-6 mx-6"
-    >
+    <v-card class="my-6 mx-6"
+            :disabled="avatarCardDisabled"
+            :loading="avatarLoading">
       <template slot="progress">
         <v-progress-linear
             color="#FF5722"
@@ -41,48 +40,52 @@
             indeterminate
         ></v-progress-linear>
       </template>
-      <v-card-title class="body-1">设置头像</v-card-title>
-
-      <v-divider class="mx-4"></v-divider>
-
-      <v-card-text>
-        <template>
-          <v-form ref="avatarForm" lazy-validation style="width: 100%">
-            <v-file-input
-                :rules="avatarRules"
-                accept="image/png, image/jpeg"
-                placeholder="jpg png 小于100kb"
-                prepend-icon="mdi-camera"
-                label="选择头像"
-                show-size
-                @change="avatarChange"
-            ></v-file-input>
-          </v-form>
-        </template>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn
-            color="orange darken-2"
-            class="ma-2 white--text"
-            :disabled="avatarButtonDisabled"
-            @click="avatarSubmit"
-        >
-          上 传
-          <v-icon
-              right
-              dark
-          >
-            mdi-cloud-upload
-          </v-icon>
-        </v-btn>
-      </v-card-actions>
+      <v-expansion-panels accordion hover>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+          <span>
+            <v-icon color="info" class="mr-3">
+              mdi-account-box-outline
+            </v-icon>
+            设置头像
+          </span>
+          </v-expansion-panel-header>
+          <v-divider class="mx-4"></v-divider>
+          <v-expansion-panel-content>
+            <v-form ref="avatarForm" lazy-validation style="width: 100%; margin: 1.5rem 0 0 0">
+              <v-file-input
+                  :rules="avatarRules"
+                  accept="image/png, image/jpeg"
+                  placeholder="jpg png 小于100kb"
+                  prepend-icon="mdi-camera"
+                  label="选择头像"
+                  show-size
+                  @change="avatarChange"
+              ></v-file-input>
+            </v-form>
+            <v-btn
+                color="orange darken-2"
+                class="ma-2 white--text"
+                :disabled="avatarButtonDisabled"
+                @click="avatarSubmit"
+            >
+              上 传
+              <v-icon
+                  right
+                  dark
+              >
+                mdi-cloud-upload
+              </v-icon>
+            </v-btn>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-card>
+
     <!--标题-->
-    <v-card
-        :disabled="titleCardDisabled"
-        :loading="titleLoading"
-        class="my-6 mx-6"
+    <v-card class="my-6 mx-6"
+            :disabled="titleCardDisabled"
+            :loading="titleLoading"
     >
       <template slot="progress">
         <v-progress-linear
@@ -91,43 +94,66 @@
             indeterminate
         ></v-progress-linear>
       </template>
-
-      <v-card-title class="body-1">修改顶部标题<span class="caption"></span></v-card-title>
-
-      <v-divider class="mx-4"></v-divider>
-
-      <v-card-text>
-        <template>
-          <v-form ref="titleForm" lazy-validation style="width: 100%">
-            <v-text-field
-                v-model="title"
-                label="自定义标题"
-                :rules="titleRules"
-                :counter="15"
-                maxlength="15"
-                prepend-icon="mdi-format-title"
-            ></v-text-field>
-          </v-form>
-        </template>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn
-            color="orange darken-2"
-            class="ma-2 white--text"
-            :disabled="titleButtonDisabled"
-            @click="titleSubmit"
-        >
-          确 认
-          <v-icon
-              right
-              dark
-          >
-            mdi-comment-edit-outline
-          </v-icon>
-        </v-btn>
-      </v-card-actions>
+      <v-expansion-panels accordion hover>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+          <span>
+            <v-icon color="info" class="mr-3">
+              mdi-format-title
+            </v-icon>
+            修改顶部标题
+          </span>
+          </v-expansion-panel-header>
+          <v-divider class="mx-4"></v-divider>
+          <v-expansion-panel-content>
+            <v-form ref="titleForm" lazy-validation style="width: 100%;  margin: 1.5rem 0 0 0;">
+              <v-text-field
+                  v-model="title"
+                  label="自定义标题"
+                  :rules="titleRules"
+                  :counter="15"
+                  maxlength="15"
+                  prepend-icon="mdi-format-title"
+              ></v-text-field>
+            </v-form>
+            <v-btn
+                color="orange darken-2"
+                class="ma-2 white--text"
+                :disabled="titleButtonDisabled"
+                @click="titleSubmit"
+            >
+              确 认
+              <v-icon
+                  right
+                  dark
+              >
+                mdi-comment-edit-outline
+              </v-icon>
+            </v-btn>
+            <v-switch
+                class="float-right"
+                v-model="hideFootValue"
+                :label="switchLabel"
+                color="success"
+                :loading="warning"
+                @change="hideFoot"
+                :disabled="disabled"
+                hide-details
+            ></v-switch>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-card>
+
+    <!--订阅-->
+    <Sub/>
+
+    <!--其他服务-->
+    <Others/>
+
+    <!--站内留言-->
+    <UserMessage/>
+
     <!--系统消息-->
     <SystemMessage/>
   </div>
@@ -136,16 +162,25 @@
 <script>
 import {post} from "@/utilis/request";
 import {base64decode} from "crypto.js";
+import Sub from "@/components/profiles/userInfo/Sub";
+import MemberTime from "@/components/profiles/userInfo/MemberTime";
+import Others from "@/components/profiles/userInfo/Others";
+import UserMessage from "@/components/profiles/userInfo/UserMessage";
 
-const SystemMessage = () => import("@/components/profiles/SystemMessage")
+const SystemMessage = () => import("@/components/profiles/userInfo/SystemMessage")
 
 export default {
   name: "UserInfo",
 
-  components: {SystemMessage},
+  components: {UserMessage, Others, MemberTime, Sub, SystemMessage},
 
   data: () => ({
     avatarShow: false,
+
+    hideFootValue: '',
+    warning: false,
+    switchLabel: '显示中',
+    disabled: true,
 
     token: '',
     avatar: '',
@@ -162,9 +197,25 @@ export default {
 
   created() {
     this.token = base64decode(localStorage.getItem('access_token')).toString()
+
+    // this.hideFootValue = !(!this.$store.state.userType && !this.$store.state.userType2);
+    this.hideFootValue = this.$store.state.userType2
+
+    if (this.$store.state.userType) {
+      this.disabled = false
+    }
   },
 
   computed: {
+    avatarUrl() {
+      let avatar = this.$store.state.userInfo.avatar
+      let cut = avatar.substring(avatar.length - 3)
+      if (cut !== 'peg' && cut !== 'jpg' && cut !== 'png') {
+        return 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      } else {
+        return this.$store.state.userInfo.avatar
+      }
+    },
     //title验证规则
     titleRules() {
       return [
@@ -178,14 +229,14 @@ export default {
         value => !value || value.size < 100000 || '图片大小100KB以内!',
         value => !!value || '请选择图片',
       ]
-    }
+    },
   },
 
   watch: {
     //监听title验证
     title: 'validateTitle',
     //监听avatar验证
-    avatar: 'validateAvatar'
+    avatar: 'validateAvatar',
   },
 
   methods: {
@@ -258,6 +309,32 @@ export default {
             this.titleLoading = this.titleCardDisabled = this.titleButtonDisabled = false
           })
     },
+
+    //hidefoot
+    hideFoot(e) {
+      console.log(e);
+      this.warning = true
+      this.hideFootValue = true
+      post('hideFoot', {hideFoot: e}, {headers: {'Authorization': 'Bearer ' + this.token, 'Content-Type': 'application/json', 'Accept': 'application/json'}})
+          .then(response => {
+            if (response.status === 200) {
+              this.$store.commit('userType2Mutations', response.data.hideFoot)
+              this.warning = false
+              this.hideFootValue = response.data.hideFoot;
+              if (response.data.hideFoot === 0) {
+                this.switchLabel = '显示中'
+              } else {
+                this.switchLabel = '已隐藏'
+              }
+            }
+          })
+          .catch(error => {
+            this.warning = false
+            this.hideFootValue = false
+            this.switchLabel = '显示中'
+            this.Message('error', error)
+          })
+    }
   },
 
   mounted() {

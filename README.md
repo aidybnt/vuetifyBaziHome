@@ -35,7 +35,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     <td>{{ item.call }}</td>
     <td>{{ item.sex }}</td>
     <td>{{ item.name }}</td>
-    <td>{{ item.bak1 }}</td>
+    <td>{{ item.bak_1 }}</td>
     <td>{{ item.born }}</td>
     <td>{{ item.area }}</td>
     <td :class="{typeClass:isTypeClass}">

@@ -24,8 +24,8 @@ export default {
   data() {
     return {
       model: 0,
-      // port: ':2053',
-      port: ':6001',
+      port: ':2053',
+      localport: ':6001',
       id: '',
       token: '',
     }
@@ -35,14 +35,16 @@ export default {
     this.id = base64decode(localStorage.getItem('id')).toString()
 
     this.$store.dispatch('getMessage')
+    this.$store.dispatch('userMessageGetActions')
+    this.$store.dispatch('userNoReadReplyCountActions')
   },
   methods: {},
   mounted() {
     window.io = require('socket.io-client');
     window.Echo = new Echo({
       broadcaster: 'socket.io',
-      // host: 'https://data.water555.xyz' + this.port
-      host: 'http://192.168.1.163' + this.port,
+      host: 'https://data.water555.xyz' + this.port,
+      // host: 'http://192.168.1.163' + this.localport,
       auth: {
         headers: {
           'Authorization': 'Bearer ' + this.token
@@ -54,6 +56,11 @@ export default {
         .listen('RegisterUserEvent', (e) => {
           if (e.msg === 'privateMessage') {
             this.$store.dispatch('getMessage')
+          }
+          if (e.msg.type === 'reply') {
+            this.$store.dispatch('userMessageGetActions')
+            this.$store.commit('userNoReadReplyCountMutations', 1)
+            this.Message('success', e.msg.msg)
           }
         })
     //公共

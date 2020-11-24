@@ -2,58 +2,66 @@
   <!--系统消息-->
   <v-card
       class="my-6 mx-6"
-      v-if="$store.state.getMessage.privateMessage.length > 0 || $store.state.getMessage.publicMessage !== null"
+      v-if="
+              $store.state.getMessage.privateMessage.length > 0 ||
+              $store.state.getMessage.publicMessage.length > 0
+             "
       style="box-shadow: none"
   >
-    <v-card-title class="blue white--text body-1 sd">系统消息<span class="caption"></span></v-card-title>
+    <v-card-title class="light-blue darken-1 white--text body-1 sd">
+      <v-icon class="mr-3 white--text">mdi-alert-rhombus-outline</v-icon>
+      系统消息
+    </v-card-title>
     <v-divider class="mx-4"></v-divider>
-    <v-expansion-panels multiple>
+    <v-expansion-panels multiple hover>
       <!--      public-->
       <v-expansion-panel
           v-for="(item, index) in $store.state.getMessage.publicMessage"
-          :key="index"
+          :key="item.id"
           @change="publicClickChange(item,index)"
           :readonly="index===currentNum"
       >
-        <div v-show="item.not_bak_1 == '1'">
-          <v-expansion-panel-header
-              disable-icon-rotate
-              class="overline text-body-1 text--black"
-          >
-            {{ item.title }}
-            <template v-slot:actions>
-              <div :class="{active:index===currentNum}">
-                <v-icon v-if="item.not_isread === '0'" color="error">
-                  mdi-email-alert-outline
-                </v-icon>
-                <v-icon v-else color="teal">
-                  mdi-check
-                </v-icon>
-              </div>
-              <v-progress-circular
-                  :width="3"
-                  size="18"
-                  color="orange"
-                  indeterminate
-                  v-show="currentNum===index"
-              ></v-progress-circular>
-            </template>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-row no-gutters>
-              <v-col cols="11" v-html="item.message"></v-col>
-              <v-col cols="1">
-                <v-icon
-                    class="float-right"
-                    style="cursor: pointer"
-                    v-if="item.not_isread == '1'"
-                    @click="delPublic(item,index)"
-                >mdi-delete
-                </v-icon>
-              </v-col>
-            </v-row>
-          </v-expansion-panel-content>
-        </div>
+        <v-expansion-panel-header
+            disable-icon-rotate
+            class="overline text-body-1 text--black text-truncate"
+            style="box-shadow: 0 27px 1px -26px rgba(0, 0, 0, 0.2)"
+        >
+          <span class="text-truncate">
+          {{ item.title }}
+          </span>
+          <template v-slot:actions>
+            <span class="pr-6 d-none d-sm-flex body-2 mt-1">{{ item.sendtime.substring(-1, 16).substring(2, item.sendtime.substring(-1, 16).length) }}</span>
+            <div :class="{active:index===currentNum}">
+              <v-icon v-if="item.not_isread === '0'" color="error">
+                mdi-email-alert-outline
+              </v-icon>
+              <v-icon v-else color="teal">
+                mdi-check
+              </v-icon>
+            </div>
+            <v-progress-circular
+                :width="3"
+                size="18"
+                color="orange"
+                indeterminate
+                v-show="currentNum===index"
+            ></v-progress-circular>
+          </template>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-row no-gutters class="mt-6">
+            <v-col cols="11" v-html="item.message"></v-col>
+            <v-col cols="1">
+              <v-icon
+                  class="float-right"
+                  style="cursor: pointer"
+                  v-if="item.not_isread == '1'"
+                  @click="delPublic(item,index)"
+              >mdi-delete
+              </v-icon>
+            </v-col>
+          </v-row>
+        </v-expansion-panel-content>
       </v-expansion-panel>
       <!--      private-->
       <v-expansion-panel
@@ -65,9 +73,13 @@
         <v-expansion-panel-header
             disable-icon-rotate
             class="text-body-1 text--black"
+            style="box-shadow: 0 27px 1px -26px rgba(0, 0, 0, 0.2);"
         >
+          <span class="text-truncate">
           {{ item.title }}
+          </span>
           <template v-slot:actions>
+            <span class="pr-6 d-none d-sm-flex body-2 mt-1">{{ item.sendtime.substring(-1, 16).substring(2, item.sendtime.substring(-1, 16).length) }}</span>
             <div :class="{active:index===currentNum2}">
               <v-icon v-if="item.isread === '0'" color="error">
                 mdi-email-alert-outline
@@ -86,7 +98,7 @@
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-row no-gutters>
+          <v-row no-gutters class="mt-6">
             <v-col cols="11" v-html="item.message"></v-col>
             <v-col cols="1">
               <v-icon
@@ -159,7 +171,7 @@ export default {
       post('isrevoke', {id: item.not_statu_id}, {headers: {'Authorization': 'Bearer ' + this.token, 'Content-Type': 'application/json', 'Accept': 'application/json'}})
           /*eslint no-unused-vars: ["error", { "args": "none" }]*/
           .then(response => {
-            this.$store.state.getMessage.publicMessage[index].not_bak_1 = 0
+            this.$store.state.getMessage.publicMessage.splice(index, 1);
             this.currentNum = -1
           })
     },
@@ -182,6 +194,6 @@ export default {
 }
 
 .sd {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 5px 0 rgba(0, 0, 0, 0.3) !important;
 }
 </style>

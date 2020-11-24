@@ -1,5 +1,5 @@
 <template>
-  <v-row class="blue-grey">
+  <v-row no-gutters class="blue-grey">
     <Message/>
     <!--topHead-->
     <v-app-bar
@@ -59,14 +59,9 @@
             <!--文字说明-->
             <p
                 style="min-width: 300px"
-                class="white--text mt-12 font-weight-light text-subtitle-1">
-              沉浸式命盘展示 <br>
-              实时排盘，实时显示确认 <br>
-              精确到时，考试、婚嫁、择日等体验完美 <br>
-              数据存储，查询修改随心所欲<br>
-              邮箱注册，不用手机号<br>
-              互联网服务器，确保隐私和数据安全<br>
-            </p>
+                class="white--text mt-6 font-weight-light text-subtitle-1"
+                v-html="desc"
+            ></p>
           </v-col>
         </v-row>
         <Login/>
@@ -100,6 +95,14 @@ export default {
       boxShadow: '0 0 30px 9px rgba(255, 255, 255, 0.6)',
     },
   }),
+  created() {
+    this.$store.dispatch('getStaticData')
+  },
+  computed: {
+    desc() {
+      return this.$store.state.staticData.homeDesc
+    }
+  },
 
   methods: {
     login() {
@@ -132,3 +135,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.v-card {
+  border-radius: unset !important;
+}
+</style>

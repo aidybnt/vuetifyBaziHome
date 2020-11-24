@@ -21,7 +21,7 @@
                 append-outer-icon="mdi-magnify"
                 :hide-details="false"
                 autocomplete="off"
-                hint="默认查询当前页，点击按钮查询数据库"
+                hint="空白查询即可刷新数据"
                 @click:append-outer="sendSearch"
             ></v-text-field>
           </v-col>
@@ -46,8 +46,8 @@
           </div>
         </template>
         <!--单独显示生辰-->
-        <template v-slot:item.bak1="{ value:bak1 }">
-          <v-btn text class="ma-0 pa-0" color="#43A047"> {{ bak1 }}</v-btn>
+        <template v-slot:item.bak_1="{ value:bak_1 }">
+          <v-btn text class="ma-0 pa-0" color="#43A047"> {{ bak_1 }}</v-btn>
         </template>
         <!--单独输出本命特征-->
         <template v-slot:item.type="{ item:type, value:text }">
@@ -163,7 +163,7 @@ export default {
         {text: '称呼', value: 'call', align: 'start', width: 90, sortable: false,},
         {text: '性别', value: 'sex', align: 'start', width: 80,},
         {text: '姓名', value: 'name', align: 'start', width: 90,},
-        {text: '生辰', value: 'bak1', align: 'start', width: 170,},
+        {text: '生辰', value: 'bak_1', align: 'start', width: 170,},
         {text: '出生地', value: 'born', align: 'start', width: 120, sortable: false,},
         {text: '常住区域', value: 'area', align: 'start', width: 110,},
         {text: '本命特征', value: 'type', align: 'start', width: 200, sortable: false,},

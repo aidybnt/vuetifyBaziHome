@@ -192,11 +192,18 @@ export default {
                 localStorage.setItem('avatarPath', response.data.user.avatarPath)
                 localStorage.setItem('user_type', response.data.user.user_type)
                 localStorage.setItem('APP_URL', response.data.user.APP_URL)
+
                 this.$store.commit('userInfoMuta', {
-                  username: localStorage.username,
-                  avatar: (localStorage.APP_URL + localStorage.avatar),
-                  title: localStorage.title,
+                  username: response.data.user.username,
+                  avatar: (response.data.user.APP_URL + response.data.user.avatar),
+                  title: response.data.user.title,
                 })
+
+                this.$store.commit('paginationMuta', {total: localStorage.getItem('total')})
+
+                this.$store.commit('userTypeMutations', response.data.user.user_type)
+                this.$store.commit('userType2Mutations', response.data.user.user_type2)
+
                 if (response.data.user.user_type === 9) {
                   this.Message('error', '用户受限，请联系管理员。')
                   this.closeDialog()
