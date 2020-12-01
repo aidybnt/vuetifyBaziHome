@@ -1,6 +1,6 @@
 <template>
   <v-footer app class="blue-grey darken-4 pa-0" elevation="6">
-    <!--    底部导航-->
+    <!--底部导航-->
     <v-bottom-navigation
         :value="value"
         :background-color="color"
@@ -21,8 +21,8 @@
       </v-btn>
     </v-bottom-navigation>
 
-    <!--    版权-->
-    <v-spacer class="d-flex justify-center" v-if="$store.state.userType===1 && $store.state.userType2===0 || $store.state.userType===0">
+    <!--版权-->
+    <v-spacer class="d-flex justify-center" v-if="$store.state.userType2===0">
       <v-btn @click="bottomSheetShow" text color="white" class="caption pa-0">
         <v-icon small class="mr-2"> mdi-copyright</v-icon>
         {{ new Date().getFullYear() }}
@@ -35,7 +35,7 @@
       </v-btn>
     </v-spacer>
 
-    <!--   底部弹出层-->
+    <!--底部弹出层-->
     <v-bottom-sheet
         :value="$store.state.isBottomSheetShow"
         @click="bottomSheetShow"

@@ -263,7 +263,7 @@ export default {
         hour: '',
         minute: '',
         name: '',
-        call: '陈平安',
+        call: '',
         born: '',
         type: [],
         desc: '',
@@ -321,13 +321,13 @@ export default {
 
   watch: {
     //计算默认称呼
-    'formData.sex': function () {
-      if (this.formData.sex === '女') {
-        this.formData.call = '陈美满'
-      } else {
-        this.formData.call = '陈平安'
-      }
-    },
+    // 'formData.sex': function () {
+    //   if (this.formData.sex === '女') {
+    //     this.formData.call = '陈美满'
+    //   } else {
+    //     this.formData.call = '陈平安'
+    //   }
+    // },
   },
 
   methods: {

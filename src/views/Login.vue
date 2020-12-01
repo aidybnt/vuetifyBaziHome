@@ -1,14 +1,7 @@
 <template>
-  <v-dialog
-      v-model="this.$store.state.loginDialog.dialog"
-      persistent
-      max-width="600px"
-  >
-    <v-card
-        :disabled="processing"
-        :loading="processing"
-    >
-      <!--        进度条loading-->
+  <v-dialog v-model="this.$store.state.loginDialog.dialog" persistent max-width="600px">
+    <v-card :disabled="processing" :loading="processing">
+      <!--进度条loading-->
       <template slot="progress">
         <v-progress-linear
             color="#FF5722"
@@ -16,18 +9,15 @@
             indeterminate
         ></v-progress-linear>
       </template>
-      <!--        对话框标题-->
+      <!--对话框标题-->
       <v-card-title>
         <span class="headline" v-text="this.$store.state.loginDialog.title"></span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
-            <!--              表单-->
-            <v-form
-                ref="form"
-                lazy-validation
-                style="width: 100%">
+            <!--表单-->
+            <v-form ref="form" lazy-validation style="width: 100%">
               <v-col cols="12">
                 <v-text-field
                     label="用户名"
@@ -60,6 +50,7 @@
                     maxlength="30"
                     required
                     prepend-icon="mdi-form-textbox-password"
+                    @keyup.enter.native="save"
                 ></v-text-field>
               </v-col>
               <v-col v-if="this.$store.state.loginDialog.title === '注册'" cols="12">
@@ -81,25 +72,14 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-btn
-            color="#607D8B"
-            text
-            @click="findPassword">
+        <v-btn color="#607D8B" text @click="findPassword">
           忘记密码
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-            color="blue darken-1"
-            text
-            @click="closeDialog"
-        >
+        <v-btn color="blue darken-1" text @click="closeDialog">
           取消
         </v-btn>
-        <v-btn
-            color="blue darken-1"
-            text
-            @click="save"
-        >
+        <v-btn color="blue darken-1" text @click="save">
           确定
         </v-btn>
       </v-card-actions>
@@ -182,6 +162,16 @@ export default {
             .then(response => {
               this.processing = false
               if (response.status === 200) {
+                //首次登陆
+                setTimeout(() => {
+                  if (response.data.firstLogin !== 0) {
+                    this.$store.commit('firstLoginMutations', {
+                      snackbar: true,
+                      firstLogin: response.data.firstLogin
+                    })
+                  }
+                }, 3000)
+
                 this.Message('success', response.data.message)
                 //本地存储
                 localStorage.setItem('access_token', base64encode(response.data.data.access_token))
@@ -205,11 +195,16 @@ export default {
                 this.$store.commit('userType2Mutations', response.data.user.user_type2)
 
                 if (response.data.user.user_type === 9) {
+                  this.$router.push('/')
                   this.Message('error', '用户受限，请联系管理员。')
                   this.closeDialog()
                   localStorage.clear()
-                  this.$router.push('/')
                 }
+
+                if (response.data.user.membertime) {
+                  this.$store.commit('membertimeMutations', response.data.user.membertime)
+                }
+
                 setTimeout(() => {
                   this.$router.push('/add')
                   this.closeDialog()

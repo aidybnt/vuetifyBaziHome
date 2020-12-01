@@ -2,15 +2,9 @@
   <v-row no-gutters class="blue-grey">
     <Message/>
     <!--topHead-->
-    <v-app-bar
-        app
-        color="blue-grey darken-2"
-        elevation="9"
-    >
+    <v-app-bar app color="blue-grey darken-2" elevation="9">
       <v-spacer class="text-center">
-        <span class="text-h5 white--text"
-              @click="backHome"
-              style="letter-spacing: 5px !important;font-weight: lighter;cursor: pointer">
+        <span class="text-h5 white--text" @click="backHome" style="letter-spacing: 5px !important;font-weight: lighter;cursor: pointer">
           科学五行八字
         </span>
       </v-spacer>
@@ -24,44 +18,20 @@
           </v-col>
           <!--大标题-->
           <v-col cols="12" class="mb-0 mb-sm-4">
-            <div
-                class="text-h3
-                font-weight-bold
-                 mb-2
-                white--text"
-                v-text="textSta"
-            ></div>
+            <div class="text-h3 font-weight-bold mb-2 white--text" v-text="textSta"></div>
           </v-col>
           <!--按钮-->
-          <v-col
-              cols="12" class="mb-2"
-          >
-            <v-btn class="ma-3 white--text"
-                   elevation="3"
-                   large
-                   color="deep-orange darken-1"
-                   style="min-width:228px"
-                   @click="login"
-            >
+          <v-col cols="12" class="mb-2">
+            <v-btn class="ma-3 white--text" elevation="3" large color="deep-orange darken-1" style="min-width:228px" @click="login">
               <v-icon class="mr-2">mdi-launch</v-icon>
               立即使用
             </v-btn>
-            <v-btn class="white--text ma-3"
-                   elevation="3"
-                   large
-                   color="blue"
-                   style="min-width:228px"
-                   @click="register"
-            >
+            <v-btn class="white--text ma-3" elevation="3" large color="blue" style="min-width:228px" @click="register">
               <v-icon class="mr-2">mdi-account-arrow-right</v-icon>
               注册账号
             </v-btn>
             <!--文字说明-->
-            <p
-                style="min-width: 300px"
-                class="white--text mt-6 font-weight-light text-subtitle-1"
-                v-html="desc"
-            ></p>
+            <p style="min-width: 300px" class="white--text mt-6 font-weight-light text-subtitle-1" v-html="desc"></p>
           </v-col>
         </v-row>
         <Login/>

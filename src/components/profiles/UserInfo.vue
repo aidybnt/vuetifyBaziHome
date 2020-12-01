@@ -29,6 +29,9 @@
     <!--用户组别-->
     <MemberTime/>
 
+    <!--修改密码-->
+    <modify-password/>
+
     <!--设置头像-->
     <v-card class="my-6 mx-6"
             :disabled="avatarCardDisabled"
@@ -83,26 +86,16 @@
     </v-card>
 
     <!--标题-->
-    <v-card class="my-6 mx-6"
-            :disabled="titleCardDisabled"
-            :loading="titleLoading"
-    >
+    <v-card class="my-6 mx-6" :disabled="titleCardDisabled" :loading="titleLoading">
       <template slot="progress">
-        <v-progress-linear
-            color="#FF5722"
-            height="10"
-            indeterminate
-        ></v-progress-linear>
+        <v-progress-linear color="#FF5722" height="10" indeterminate></v-progress-linear>
       </template>
       <v-expansion-panels accordion hover>
         <v-expansion-panel>
           <v-expansion-panel-header>
-          <span>
-            <v-icon color="info" class="mr-3">
+          <span><v-icon color="info" class="mr-3">
               mdi-format-title
-            </v-icon>
-            修改顶部标题
-          </span>
+            </v-icon>修改顶部标题</span>
           </v-expansion-panel-header>
           <v-divider class="mx-4"></v-divider>
           <v-expansion-panel-content>
@@ -116,19 +109,9 @@
                   prepend-icon="mdi-format-title"
               ></v-text-field>
             </v-form>
-            <v-btn
-                color="orange darken-2"
-                class="ma-2 white--text"
-                :disabled="titleButtonDisabled"
-                @click="titleSubmit"
-            >
+            <v-btn color="orange darken-2" class="ma-2 white--text" :disabled="titleButtonDisabled" @click="titleSubmit">
               确 认
-              <v-icon
-                  right
-                  dark
-              >
-                mdi-comment-edit-outline
-              </v-icon>
+              <v-icon right dark> mdi-comment-edit-outline</v-icon>
             </v-btn>
             <v-switch
                 class="float-right"
@@ -148,11 +131,11 @@
     <!--订阅-->
     <Sub/>
 
-    <!--其他服务-->
-    <Others/>
-
     <!--站内留言-->
     <UserMessage/>
+
+    <!--其他服务-->
+    <Others/>
 
     <!--系统消息-->
     <SystemMessage/>
@@ -166,21 +149,21 @@ import Sub from "@/components/profiles/userInfo/Sub";
 import MemberTime from "@/components/profiles/userInfo/MemberTime";
 import Others from "@/components/profiles/userInfo/Others";
 import UserMessage from "@/components/profiles/userInfo/UserMessage";
+import ModifyPassword from "@/components/profiles/userInfo/modifyPassword";
 
 const SystemMessage = () => import("@/components/profiles/userInfo/SystemMessage")
 
 export default {
   name: "UserInfo",
 
-  components: {UserMessage, Others, MemberTime, Sub, SystemMessage},
+  components: {ModifyPassword, UserMessage, Others, MemberTime, Sub, SystemMessage},
 
   data: () => ({
     avatarShow: false,
 
-    hideFootValue: '',
+    hideFootValue: false,
     warning: false,
     switchLabel: '显示中',
-    disabled: true,
 
     token: '',
     avatar: '',
@@ -197,16 +180,12 @@ export default {
 
   created() {
     this.token = base64decode(localStorage.getItem('access_token')).toString()
-
-    // this.hideFootValue = !(!this.$store.state.userType && !this.$store.state.userType2);
-    this.hideFootValue = this.$store.state.userType2
-
-    if (this.$store.state.userType) {
-      this.disabled = false
-    }
   },
 
   computed: {
+    disabled() {
+      return !this.$store.state.userType
+    },
     avatarUrl() {
       let avatar = this.$store.state.userInfo.avatar
       let cut = avatar.substring(avatar.length - 3)
@@ -311,21 +290,24 @@ export default {
     },
 
     //hidefoot
+    hideFootHandle() {
+      if (this.$store.state.userType2 === 0) {
+        this.switchLabel = '显示中'
+        this.hideFootValue = false
+      } else {
+        this.switchLabel = '已隐藏'
+        this.hideFootValue = true
+      }
+    },
     hideFoot(e) {
-      console.log(e);
+      //0显示，1隐藏
       this.warning = true
-      this.hideFootValue = true
       post('hideFoot', {hideFoot: e}, {headers: {'Authorization': 'Bearer ' + this.token, 'Content-Type': 'application/json', 'Accept': 'application/json'}})
           .then(response => {
             if (response.status === 200) {
               this.$store.commit('userType2Mutations', response.data.hideFoot)
               this.warning = false
-              this.hideFootValue = response.data.hideFoot;
-              if (response.data.hideFoot === 0) {
-                this.switchLabel = '显示中'
-              } else {
-                this.switchLabel = '已隐藏'
-              }
+              this.hideFootHandle()
             }
           })
           .catch(error => {
@@ -338,6 +320,7 @@ export default {
   },
 
   mounted() {
+    this.hideFootHandle()
     this.avatarShow = localStorage.APP_URL + localStorage.avatar
     let cut = this.avatarShow.substring(this.avatarShow.length - 3)
     if (cut !== 'peg' && cut !== 'jpg' && cut !== 'png') {

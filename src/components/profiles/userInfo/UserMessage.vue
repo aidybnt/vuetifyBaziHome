@@ -22,7 +22,6 @@
         </v-expansion-panel-header>
         <v-divider class="mx-4"></v-divider>
         <v-expansion-panel-content>
-
           <v-timeline dense clipped align-top>
 
             <!--输入留言-->
@@ -128,12 +127,6 @@ export default {
       })
     },
 
-    clear: async function () {
-      await this.send()
-      this.content = ''
-      console.log(11);
-    },
-
     delMessage(index, id) {
       this.$store.dispatch('userMessageSendActions', {
         value: {id: id,},
@@ -151,8 +144,10 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      if (this.$store.state.userNoReadReplyCount.data > 0) {
-        this.effect = 'effect'
+      if (this.$store.state.userNoReadReplyCount) {
+        if (this.$store.state.userNoReadReplyCount > 0) {
+          this.effect = 'effect'
+        }
       }
     })
   }

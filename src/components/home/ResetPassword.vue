@@ -1,31 +1,13 @@
 <template>
-  <v-dialog
-      v-model="this.$store.state.findPasswordReset.reset"
-      max-width="600"
-      @click:outside="resetClickOutside"
-  >
-    <v-card
-        class="mx-auto"
-        elevation="6"
-        :disabled="processing"
-        :loading="processing"
-    >
+  <v-dialog v-model="this.$store.state.findPasswordReset.reset" max-width="600" @click:outside="resetClickOutside">
+    <v-card class="mx-auto" elevation="6" :disabled="processing" :loading="processing">
       <!--        进度条loading-->
       <template slot="progress">
-        <v-progress-linear
-            color="#FF5722"
-            height="10"
-            indeterminate
-        ></v-progress-linear>
+        <v-progress-linear color="#FF5722" height="10" indeterminate></v-progress-linear>
       </template>
       <v-card-title class="title font-weight-regular justify-space-between text-body-1">
         <span>{{ currentTitle }}</span>
-        <v-avatar
-            color="primary lighten-2"
-            class="subheading white--text"
-            size="24"
-            v-text="step"
-        ></v-avatar>
+        <v-avatar color="primary lighten-2" class="subheading white--text" size="24" v-text="step"></v-avatar>
       </v-card-title>
       <!--重置密码-->
       <v-window v-model="step">
@@ -54,9 +36,7 @@
                   @click:append="show2 = !show2"
                   prepend-icon="mdi-key-plus"
               ></v-text-field>
-              <span class="d-inline-block mt-6 caption grey--text text--darken-1">
-            请重置您的密码，并牢记。
-          </span>
+              <span class="d-inline-block mt-6 caption grey--text text--darken-1">请重置您的密码，并牢记。</span>
             </v-card-text>
           </v-form>
         </v-window-item>
@@ -71,22 +51,9 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn
-            :disabled="step === 1"
-            text
-            @click="step--"
-        >
-          Back
-        </v-btn>
+        <v-btn :disabled="step === 1" text @click="step--"> Back</v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-            :disabled="step === 2"
-            color="primary"
-            depressed
-            @click="reset"
-        >
-          Next
-        </v-btn>
+        <v-btn :disabled="step === 2" color="primary" depressed @click="reset"> Next</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -98,7 +65,7 @@ import {post} from "@/utilis/request";
 export default {
   name: "ResetPassword",
   data: () => ({
-        step: 1,
+        step: 2,
         processing: false,
         show1: false,
         show2: false,
@@ -169,7 +136,7 @@ export default {
           })
     },
     backLogin() {
-      this.$store.commit('findPasswordMuta', {handle: false})
+      this.$store.commit('findPasswordResetMuta', {reset: false})
       setTimeout(() => {
         this.$store.commit('loginDialogMuta', {dialog: true, title: '登陆'})
       }, 600)

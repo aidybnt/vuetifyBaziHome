@@ -1,17 +1,9 @@
 <template>
   <div>
     <v-overlay :value="overflow">
-      <v-progress-circular
-          indeterminate
-          size="64"
-      ></v-progress-circular>
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
-    <v-app-bar
-        app
-        color="#595757"
-        elevation="9"
-        style="left: 0;"
-    >
+    <v-app-bar app color="#595757" elevation="9" style="left: 0;">
       <v-icon @click="exit" color="white">mdi-power-standby</v-icon>
       <v-spacer class="text-center">
         <span v-if="$store.state.userInfo.title === 'null'" class="white--text text-xs-body-1 text-sm-h5"
@@ -40,12 +32,14 @@ export default {
   data() {
     return {
       token: '',
-      title: '白小飞-命盘管理系统',
+      title: '白小飞命盘管理系统',
       overflow: false,
     }
   },
   methods: {
     exit() {
+      this.$router.push({name: 'Home'})
+      this.$store.commit('userNoReadReplyCountMutations', 0)
       //解密token和id
       this.token = base64decode(localStorage.getItem('access_token')).toString()
       this.overflow = true
@@ -56,7 +50,6 @@ export default {
             this.$store.commit('paginationMuta', {total: ''})
             localStorage.clear()
             localStorage.setItem('access_token', 'null')
-            this.$router.push({name: 'Home'})
           })
           .catch(error => {
             this.Message('error', error)

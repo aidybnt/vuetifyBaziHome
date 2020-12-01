@@ -59,11 +59,13 @@ export default new Vuex.Store({
 
     userType: '',
     userType2: '',
+    membertime: '',
 
     staticData: {
       homeDesc: '',
       subDesc: '',
     },
+    payDesc: [],
 
     isBottomSheetShow: '',
     outSideBottomSheetShow: '',
@@ -81,6 +83,12 @@ export default new Vuex.Store({
     userMessageDialog: false,
     //获取未读回复
     userNoReadReplyCount: '',
+
+    //首次登陆
+    firstLogin: {
+      snackbar: false,
+      firstLogin: '',
+    },
   },
   mutations: {
     //打开登陆和注册界面
@@ -146,9 +154,15 @@ export default new Vuex.Store({
     userType2Mutations(state, v) {
       state.userType2 = v
     },
+    membertimeMutations(state, v) {
+      state.membertime = v
+    },
 
     homeDescMutations(state, v) {
       state.staticData = v
+    },
+    payDescMutations(s, v) {
+      s.payDesc = v
     },
 
     isBottomSheetShowMutations(state, v) {
@@ -186,6 +200,11 @@ export default new Vuex.Store({
     userNoReadReplyCountMutations(s, v) {
       s.userNoReadReplyCount = v
     },
+
+    firstLoginMutations(s, v) {
+      s.firstLogin.snackbar = v.snackbar
+      s.firstLogin.firstLogin = v.firstLogin
+    }
   },
   actions: {
     getMessage({commit}) {
@@ -222,6 +241,14 @@ export default new Vuex.Store({
           }
         })
     },
+    payDescActions({commit}) {
+      post('getPayDesc', {}, {})
+        .then(response => {
+          if (response.status === 200) {
+            commit('payDescMutations', response.data.data)
+          }
+        })
+    },
 
     //得到留言
     userMessageGetActions({commit}) {
@@ -234,7 +261,6 @@ export default new Vuex.Store({
         .then(response => {
           if (response.status === 200) {
             commit('userMessageGetMutations', response.data.data.messages)
-            console.log(response.data.data.messages);
           }
         })
     },
@@ -290,14 +316,19 @@ export default new Vuex.Store({
 
     userNoReadReplyCountActions({commit}, v) {
       post('noReadReplyCount', {read: v}, {
-        headers: {
-          'Authorization': 'Bearer ' + base64decode(localStorage.getItem('access_token')).toString(),
-          'Content-Type': 'application/json', 'Accept': 'application/json'
-        }
+        headers: {'Authorization': 'Bearer ' + base64decode(localStorage.getItem('access_token')).toString(), 'Content-Type': 'application/json', 'Accept': 'application/json'}
       })
         .then(response => {
           if (response.status === 200) {
             commit('userNoReadReplyCountMutations', response.data.data)
+            if (this.state.userNoReadReplyCount > 0) {
+              setTimeout(() => {
+                commit('firstLoginMutations', {
+                  snackbar: true,
+                  firstLogin: '您的留言，有新的回复等待查看。'
+                })
+              }, 3000)
+            }
           }
         })
     }
@@ -315,6 +346,7 @@ export default new Vuex.Store({
         userMessageGet: val.userMessageGet,
         userNoReadReplyCount: val.userNoReadReplyCount,
         pagination: val.pagination,
+        membertime: val.membertime,
       }
     }
   })],
